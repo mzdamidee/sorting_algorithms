@@ -1,47 +1,31 @@
 #include "sort.h"
 
 /**
- * selection_sort - Calls function
- * @array: Array to be sorted
- * @size: Size of array given
- * Descrtiption: Function that sorts an array using the Selection
- * sort algotrithm
- * Return: 0
+ * selection_sort - sort list with selection_sort
+ * @array: The array to be printed
+ * @size: Number of elements in @array
  */
 void selection_sort(int *array, size_t size)
 {
-	unsigned int i, j, min_idx;
+	size_t i, c, less, tmp, swap;
 
-	if (!array)
+	if (array == NULL)
 		return;
-
-	for (i = 0; i < size - 1; i++)
+	for (i = 0; i < size; i++)
 	{
-		min_idx = i;
-		for (j = i + 1; j < size; j++)
-			if (array[j] < array[min_idx])
-				min_idx = j;
-
-		if (i != min_idx)
+		for (less = i, c = i; c < size; c++)
+			if (array[c] < array[less])
+			{
+				less = c;
+				swap = 1;
+			}
+		if (swap == 1)
 		{
-			swap(&array[min_idx], &array[i]);
+			tmp = array[less];
+			array[less] = array[i];
+			array[i] = tmp;
 			print_array(array, size);
+			swap = 0;
 		}
 	}
-}
-
-/**
- * swap - Function that swaps two values
- *
- * @a: Fisrt value
- * @b: Second value
- * Return: 0
- */
-void swap(int *a, int *b)
-{
-	int tmp;
-
-	tmp = *b;
-	*b = *a;
-	*a = tmp;
 }

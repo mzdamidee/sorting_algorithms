@@ -1,35 +1,33 @@
 #include "sort.h"
-
 /**
- * insertion_sort_list - perform insertion sort on a linked list
- * @list: head node of the linked list
- */
+* insertion_sort_list - insertion sorting algorithm
+* @list: linked list to sort
+*/
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *swap, *prv;
+	listint_t *tmp;
+	int n;
 
-	if (!list || !*list)
+	if (!list)
 		return;
-
-	current = *list;
-	while ((current = current->next))
+	tmp = *list;
+	while (tmp)
 	{
-		swap = current;
-		while (swap->prev && swap->n < swap->prev->n)
+		while (tmp)
 		{
-			prv = swap->prev;
-			if (swap->next)
-				swap->next->prev = prv;
-			if (prv->prev)
-				prv->prev->next = swap;
-			else
-				*list = swap;
-			prv->next = swap->next;
-			swap->prev = prv->prev;
-			swap->next = prv;
-			prv->prev = swap;
-
-			print_list(*list);
+			if (tmp->next)
+			{
+				if (tmp->n > tmp->next->n)
+				{
+					n = tmp->n;
+					*(int *)&tmp->n = tmp->next->n;
+					*(int *)&tmp->next->n = n;
+					tmp = *list;
+					print_list(*list);
+					break;
+				}
+			}
+			tmp = tmp->next;
 		}
 	}
 }
