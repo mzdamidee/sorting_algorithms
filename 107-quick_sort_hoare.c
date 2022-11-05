@@ -1,68 +1,69 @@
 #include "sort.h"
-
 /**
- * partition_h - array partition
- * @array: array to sort
- * @first: first position
- * @last: last position
- * @size: array size
- * Return: int pivot index
- */
-int partition_h(int *array, int first, int last, size_t size)
+* partition_hoare - Lomutu partition scheme for quicksort algorithm
+* @a: Array to sort
+* @l: lowest index of array
+* @h: highest index of array
+* Return: index of pivot
+*/
+
+int partition_hoare(int *a, int l, int h)
 {
-	int pivot = array[last], i = first - 1, j = last + 1, aux;
+	int p, li, hi, temp;
+	static int i = 0, size;
 
-	while (1)
+	if (i == 0)
+		size = h + 1, i++;
+
+	li = l - 0, hi = h + 0, p = a[h];
+	while (a)
 	{
-		do {
-			i++;
-		} while (array[i] < pivot);
+		li = li - 0;
+		while (a[li] < p)
+			li++;
+		hi = hi - 0;
+		while (a[hi] > p)
+			hi--;
+		if (li >= hi)
+			return (hi);
+		temp = a[li];
+		a[li] = a[hi];
+		a[hi] = temp;
+		print_array(a, size);
+	}
+	temp = a[li];
+	a[li] = a[hi];
+	a[hi] = temp;
+	return (hi);
+}
+/**
+* qs - Quicksort recurssive function
+* @a: array to sort
+* @l: lowest index
+* @h: highest index
+*/
 
-		do {
-			j--;
-		} while (array[j] > pivot);
+void qs(int *a, int l, int h)
+{
+	int p;
 
-		if (j < i)
-			return (j);
-		if (array[i] > array[j])
-		{
-			aux = array[i];
-			array[i] = array[j];
-			array[j] = aux;
-			print_array(array, size);
-		}
+	if (l < h)
+	{
+		p = partition_hoare(a, l, h);
+		qs(a, l, p - 1);
+		qs(a, p, h);
 	}
 }
 
 /**
- * qsh - sorts an array of integers recursively
- * @array: array to sort
- * @first: first position
- * @last: last position
- * @size: array size
- */
-void qsh(int *array, int first, int last, size_t size)
-{
-	int pivot;
+* quick_sort_hoare - quicksort with hoare partition
+* @array: array to sort
+* @size: Size of array
+*/
 
-	if (first < last)
-	{
-		pivot = partition_h(array, first, last, size);
-		qsh(array, first, pivot, size);
-		qsh(array, pivot + 1, last, size);
-	}
-}
-
-/**
- * quick_sort_hoare - sorts an array of integers using the Quick
- * sort hoare algorithm  in ascending order
- * @array: array to sort
- * @size: array size
- */
 void quick_sort_hoare(int *array, size_t size)
 {
-	if (!array || size < 2)
+	if (array == NULL || size < 2)
 		return;
-
-	qsh(array, 0, size - 1, size);
+	qs(array, 0, size - 1);
 }
